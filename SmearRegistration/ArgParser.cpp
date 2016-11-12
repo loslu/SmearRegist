@@ -1,4 +1,6 @@
 #include "ArgParser.h"
+#include <iostream>
+using namespace std;
 
 ArgParser::ArgParser()
 {
@@ -32,6 +34,12 @@ void ArgParser::push_back(const string &_request)
 
 string ArgParser::GetFront()
 {
+	if (m_Reqs.empty())
+	{
+		cout << "wrong para" << endl;
+		return string();
+	}
+
 	string ans = m_Reqs.front();
 	m_Reqs.pop_front();
 

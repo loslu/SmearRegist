@@ -21,9 +21,27 @@ public:
 	int AddArg(const string &_name, function<void(void)> _func);
 
 	template<typename T>
-	int AddArgVal(const string &_name, T &_dst, size_t _argCount = 1)
+	void AddArgVal(T& _dst)
 	{
+		string s = GetFront();
+		if (!s.empty())
+		{
+			istringstream iss(s);
+			iss >> _dst;
+		}
+	}
 
+	template<typename T, typename... Args>
+	void AddArgVal(T& _dst, Args&... _args)
+	{
+		string s = GetFront();
+		if (!s.empty())
+		{
+			istringstream iss(s);
+			iss >> _dst;
+		}
+
+		AddArgVal(_args...);
 	}
 
 	int Parse();

@@ -6,8 +6,33 @@
 #include "Dispatcher.h"
 #include "FeatureDetector.h"
 
+Dispatcher& Dispatcher::GetInstance(int argc, char *argv[])
+{
+	static Dispatcher dis(argc, argv);
+
+	return dis;
+}
+
+void Dispatcher::Initialize()
+{
+	m_Parser.AddArg("-dot", bind(&Dispatcher::Test1, this));
+	m_Parser.AddArg("-kp", bind(&Dispatcher::SetKeepParse, this));
+	m_Parser.AddArg("-rg", bind(&Dispatcher::SetImgRange, this));
+	m_Parser.AddArg("-ph", bind(&Dispatcher::SetImgPath, this));
+	m_Parser.AddArg("-sf", bind(&Dispatcher::SetImgSuffix, this));
+}
+
+Dispatcher::Dispatcher()
+{
+	Initialize();
+
+	_Parse();
+}
+
 Dispatcher::Dispatcher(int argc, char *argv[])
 {
+	Initialize();
+
 	//note that argv[0] is the program name
 	if (argc > 1)
 	{
@@ -17,14 +42,10 @@ Dispatcher::Dispatcher(int argc, char *argv[])
 		}
 	}
 
-	_ParseSettings();
+	_Parse();
 }
 
-Dispatcher::~Dispatcher()
-{
-}
-
-int Dispatcher::AddSettings(istream &_inf)
+int Dispatcher::Parse(istream &_inf)
 {
 	assert(!!_inf);
 
@@ -41,7 +62,7 @@ int Dispatcher::AddSettings(istream &_inf)
 		std::copy(istream_iterator<string>(iss), istream_iterator<string>(), std::back_inserter(m_Parser));
 	}
 
-	return 0;
+	return _Parse();
 }
 
 void Dispatcher::Test1()
@@ -49,9 +70,24 @@ void Dispatcher::Test1()
 	cout << "test1" << endl;
 }
 
-void Dispatcher::Test2(int *_val)
+void Dispatcher::SetKeepParse()
 {
-	cout << "test2: " << *_val << endl;
+	m_Parser.AddArgVal(m_KeepParse);
+}
+
+void Dispatcher::SetImgRange()
+{
+	m_Parser.AddArgVal(m_XBegin, m_XEnd, m_YBegin, m_YEnd);
+}
+
+void Dispatcher::SetImgPath()
+{
+	m_Parser.AddArgVal(m_PathName);
+}
+
+void Dispatcher::SetImgSuffix()
+{
+	m_Parser.AddArgVal(m_PathName);
 }
 
 int EvaluateFeaturePoint(const loscv::PDector &_dector, const Mat &_img1, const Mat &_img2, const Mat &_homo, vector<KeyPoint> &_points1, vector<KeyPoint> &_points2)
@@ -76,22 +112,37 @@ int EvaluateFeaturePoint(const loscv::PDector &_dector, const Mat &_img1, const 
 //	
 //}
 
-int Dispatcher::_ParseSettings()
+int Dispatcher::_Parse()
 {
-	m_Parser.AddArg("-dot", bind(&Dispatcher::Test1, this));
-	m_Parser.AddArg("-doa", bind(&Dispatcher::Test2, this, &val));
-	m_Parser.AddArg("-dos", [this]() {val = 1;  cout << "Test3: " << val << endl; });
+	return m_Parser.Parse();	
+}
 
-	return m_Parser.Parse();
-
-	/*ListAdvance(cur, m_vSettings);
-	if (cur != m_vSettings.end())
+int Dispatcher::Parse(const string &_para)
+{
+	if (!_para.empty())
 	{
-		m_vFeatureSetNames.push_back(*cur);
+		istringstream iss(_para);
+		return Parse(iss);
 	}
-	else
+
+	return -1;
+}
+
+int Dispatcher::ParseFile(const string &_fileName)
+{
+	int status = -1;
+
+	ifstream inf(_fileName, ios::in);
+	if (inf)
 	{
-		g_ConLog->error("invalid parameter at line %d in %s", __LINE__, __FILE__);
-	}*/
-	
+		status = Parse(inf);
+	}
+
+	inf.close();
+	return status;
+}
+
+bool Dispatcher::KeepParse() const
+{
+	return m_KeepParse;
 }
