@@ -4,9 +4,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_PropertySheetDisplayName>OpenCV2-4-13-Debug</_PropertySheetDisplayName>
-    <ExecutablePath>$(OpenCVPath)\bin\Debug;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>$(OpenCVPath)\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OpenCVPath)\lib\Debug;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>$(OPENCV_PATH)\bin\Debug;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(OPENCV_PATH)\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENCV_PATH)\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

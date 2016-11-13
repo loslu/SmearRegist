@@ -4,9 +4,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_PropertySheetDisplayName>OpenCV2-4-13-Release</_PropertySheetDisplayName>
-    <ExecutablePath>$(OpenCVPath)\bin\Release;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>$(OpenCVPath)\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OpenCVPath)\lib\Release;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>$(OPENCV_PATH)\bin\Release;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(OPENCV_PATH)\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENCV_PATH)\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

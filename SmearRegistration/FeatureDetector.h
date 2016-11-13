@@ -8,7 +8,7 @@
 
 namespace loscv
 {
-	typedef los::NamedPtr<cv::FeatureDetector> PDector;
+typedef los::NamedPtr<cv::Feature2D> PDector;
 class FeatureDetectorFactory
 {
 	static std::map<std::string, std::function<PDector(std::string, std::string)>> s_table;

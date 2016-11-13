@@ -149,15 +149,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArgParser.cpp" />
+    <ClCompile Include="CrossFilter.cpp" />
+    <ClCompile Include="DefaultFilter.cpp" />
     <ClCompile Include="demo.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
     <ClCompile Include="FeatureDetector.cpp" />
+    <ClCompile Include="FeatureMatcher.cpp" />
+    <ClCompile Include="FeatureUtil.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArgParser.h" />
+    <ClInclude Include="CrossFilter.h" />
+    <ClInclude Include="DefaultFilter.h" />
     <ClInclude Include="Dispatcher.h" />
     <ClInclude Include="FeatureDetector.h" />
+    <ClInclude Include="FeatureMatcher.h" />
+    <ClInclude Include="FeatureUtil.h" />
+    <ClInclude Include="MatchFilter.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

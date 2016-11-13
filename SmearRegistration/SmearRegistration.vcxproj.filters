@@ -30,6 +30,18 @@
     <ClCompile Include="Util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FeatureMatcher.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossFilter.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultFilter.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FeatureUtil.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArgParser.h">
@@ -42,6 +54,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FeatureDetector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureMatcher.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossFilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultFilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchFilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureUtil.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

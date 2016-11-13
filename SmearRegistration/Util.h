@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <opencv2/opencv.hpp>
 
 namespace los
 {
@@ -19,6 +20,14 @@ public:
 		std::shared_ptr<T>::operator =(_ptr);
 
 		return *this;
+	}
+
+	operator cv::Ptr<T>() const
+	{
+		cv::Ptr<T> dup(this->get());
+		dup.addref();
+
+		return dup;
 	}
 };
 

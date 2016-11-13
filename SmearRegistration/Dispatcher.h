@@ -8,6 +8,9 @@ using namespace std;
 using namespace cv;
 
 #include "ArgParser.h"
+#include "FeatureDetector.h"
+#include "FeatureMatcher.h"
+#include "MatchFilter.h"
 
 class Dispatcher
 {
@@ -41,8 +44,17 @@ public:
 	int ParseFile(const string &_fileName);
 	bool KeepParse() const;
 
-	void Test1();
+private:
+	void AddDetector();
+	void AddMatcher();
+	void AddMatchFilter();
+	void InvokeGrayAndColorEstimation();
+	cv::Mat GetColorImage(int _x, int _y);
+	cv::Mat GetGrayImage(int _x, int _y);
+	string GetImgName(int _x, int _y);
 
-	void Test2(int *_val);
+	list<loscv::PDector> m_Dectors;
+	list<loscv::PMatcher> m_Matchers;
+	list<loscv::PMatchFilter> m_MatchFilters;
 };
 
