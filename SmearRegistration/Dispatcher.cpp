@@ -24,6 +24,7 @@ void Dispatcher::Initialize()
 	m_Parser.AddArg("-m", bind(&Dispatcher::AddMatcher, this));
 	m_Parser.AddArg("-f", bind(&Dispatcher::AddMatchFilter, this));
 	m_Parser.AddArg("-dgc", bind(&Dispatcher::InvokeGrayAndColorEstimation, this));
+	m_Parser.AddArg("-dt", bind(&Dispatcher::InvokeTranslationEstimation, this));
 }
 
 Dispatcher::Dispatcher()
@@ -158,7 +159,7 @@ void Dispatcher::InvokeGrayAndColorEstimation()
 		for (int j = m_YBegin; j < m_YEnd; ++j)
 		{
 			Mat img1 = GetColorImage(i, j);
-			Mat img2 = GetColorImage(i, j);
+			Mat img2 = GetGrayImage(i, j);
 
 			for (auto dector : m_Dectors)
 			{
@@ -167,12 +168,79 @@ void Dispatcher::InvokeGrayAndColorEstimation()
 					for (auto filter : m_MatchFilters)
 					{
 						Mat affine;
-						EstimateAffine(dector, matcher, filter, img1, img2, affine);
+						Mat matchImg;
+						EstimateAffine(dector, matcher, filter, img1, img2, affine, matchImg);
+						m_AffineRets.push_back(affine);
+						cout << affine << endl;
+						imwrite(m_PathName + GetImgName(i, j) + "-match-" + dector.m_Name + "-" + matcher.m_Name + m_Suffix, matchImg);
+
 						if (para == "show")
 						{
 							Mat dst;
-							cv::warpAffine(img1, dst, affine, cv::Size(img1.rows, img1.cols));
-							imwrite(m_PathName + GetImgName(i, j) + "-affine" + m_Suffix, dst);
+							cv::warpAffine(img1, dst, affine(cv::Rect(0, 0, 3, 2)), cv::Size(img1.cols, img1.rows));
+							imwrite(m_PathName + GetImgName(i, j) + "-affine-" + dector.m_Name + "-" + matcher.m_Name + m_Suffix, dst);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void Dispatcher::InvokeTranslationEstimation()
+{
+	string para;
+	m_Parser.AddArgVal(para);
+
+	//temporarily only horizontal translation is supported
+	if (para != "hor")
+	{
+		cout << "not supported" << endl;
+		return;
+	}
+
+	for (int i = m_XBegin; i < m_XEnd; ++i)
+	{
+		for (int j = m_YBegin; j < m_YEnd; ++j)
+		{
+			Mat img1 = GetColorImage(i, j);
+			Mat img2 = GetColorImage(i + 1, j);
+
+			for (auto dector : m_Dectors)
+			{
+				for (auto matcher : m_Matchers)
+				{
+					for (auto filter : m_MatchFilters)
+					{
+						cv::Point2f	offset;
+						Mat matchImg;
+						EstimateTranslation(dector, matcher, filter, img1, img2, offset, matchImg);
+						
+						cout << offset << endl;
+						imwrite(m_PathName + GetImgName(i, j) + "-hor-match-" + dector.m_Name + "-" + matcher.m_Name + m_Suffix, matchImg);
+
+						//horizontal translation must have offset.x < 0, because we choose the left image as img1
+						if (offset.x < 0)
+						{
+							int dx = static_cast<int>(std::round(offset.x));
+							int dy = static_cast<int>(std::round(offset.y));
+
+							Mat dst = Mat::zeros(img2.rows + abs(dy), img2.cols - dx, img1.type());
+							if (dy >= 0)
+							{
+								img1.copyTo(dst(cv::Rect(0, img2.rows - img1.rows + dy, img1.cols, img1.rows)));
+								img2.copyTo(dst(cv::Rect(-dx, 0, img2.cols, img2.rows)));
+							}
+							else
+							{
+								img1.copyTo(dst(cv::Rect(0, 0, img1.cols, img1.rows)));
+								img2.copyTo(dst(cv::Rect(-dx, -dy, img2.cols, img2.rows)));
+							}
+							imwrite(m_PathName + GetImgName(i, j) + "-hor-affine-" + dector.m_Name + "-" + matcher.m_Name + m_Suffix, dst);
+						}
+						else
+						{
+							cout << "invalid horizontal translation" << endl;
 						}
 					}
 				}

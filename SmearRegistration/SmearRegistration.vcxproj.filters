@@ -33,13 +33,13 @@
     <ClCompile Include="FeatureMatcher.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CrossFilter.cpp">
-      <Filter>头文件</Filter>
+    <ClCompile Include="FeatureUtil.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DefaultFilter.cpp">
-      <Filter>头文件</Filter>
+      <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FeatureUtil.cpp">
+    <ClCompile Include="CrossFilter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

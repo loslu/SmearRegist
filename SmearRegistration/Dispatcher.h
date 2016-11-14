@@ -49,6 +49,7 @@ private:
 	void AddMatcher();
 	void AddMatchFilter();
 	void InvokeGrayAndColorEstimation();
+	void InvokeTranslationEstimation();
 	cv::Mat GetColorImage(int _x, int _y);
 	cv::Mat GetGrayImage(int _x, int _y);
 	string GetImgName(int _x, int _y);
@@ -56,5 +57,6 @@ private:
 	list<loscv::PDector> m_Dectors;
 	list<loscv::PMatcher> m_Matchers;
 	list<loscv::PMatchFilter> m_MatchFilters;
+	list<cv::Mat> m_AffineRets;
 };
 

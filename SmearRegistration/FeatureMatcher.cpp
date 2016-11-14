@@ -17,10 +17,15 @@ PMatcher CreateBruteForce(const string &_name, const string &_paras)
 {
 	PMatcher detector(_name);
 
-
 	//parse parameters
+	int normType = cv::NORM_L2;
+	bool crossCheck = false;
+	if (_paras == "HAMMING")
+	{
+		normType = cv::NORM_HAMMING;
+	}
 
-	detector = make_shared<cv::BFMatcher>();
+	detector = make_shared<cv::BFMatcher>(normType, crossCheck);
 	if (!detector)
 	{
 		detector.m_ErrCode = -1;
@@ -58,7 +63,7 @@ PMatcher CreateFlann(const string &_name, const string &_paras)
 PMatcher FeatureMatcherFactory::Create(const string &_name, const string &_paras)
 {
 	auto iter = s_table.find(_name);
-	if (iter == s_table.end())
+	if (iter != s_table.end())
 	{
 		return iter->second(_name, _paras);
 	}

@@ -113,7 +113,7 @@ PDector CreateORB(const string &_name, const string &_paras)
 PDector FeatureDetectorFactory::Create(const string &_name, const string &_paras)
 {
 	auto iter = s_table.find(_name);
-	if (iter == s_table.end())
+	if (iter != s_table.end())
 	{
 		return iter->second(_name, _paras);
 	}
